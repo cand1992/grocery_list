@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import List from './list/List';
+import AddListItem from './list/AddListItem';
 
 class App extends Component {
   state = { groceryItems: [
@@ -26,11 +27,25 @@ class App extends Component {
     })
   }
 
+  getUniqId = () => {
+     //NOTE We are just using this as a helper function for id's since we aren't using a db yet
+     return Math.floor((1 + Math.random()) * 0x10000)
+       .toString(16)
+       .substring(1);
+  }
+
+  addItem = (incomingItem) => {
+    const { groceryItems } = this.state
+    const { newItem } = { id: this.getUniqId(), ...incomingItem }
+    this.setState({ newItem, ...groceryItems })
+  }
+
   render(){
     const { groceryItems } = this.state
     return(
       <div>
         <h1>Greg's Shopping List</h1>
+        <AddListItem addItem={ this.addItem } />
         <List items={ groceryItems } handleAdded={ this.handleAdded } />
       </div>
     )
