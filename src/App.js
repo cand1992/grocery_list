@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import List from './list/List';
+
 import ItemForm from './list/ItemForm';
+
+
+
 
 class App extends Component {
   state = { groceryItems: [
@@ -41,12 +45,32 @@ class App extends Component {
 
   }
 
+  getUniqId = () => {
+     //NOTE We are just using this as a helper function for id's since we aren't using a db yet
+     return Math.floor((1 + Math.random()) * 0x10000)
+       .toString(16)
+       .substring(1);
+  }
+
+  // My note from AddListItem.js ended up being caused by the commented out lines of code here. After looking at this with my little brother
+  // He told me that something in this function was setting my state to undefined when I tried to add a grocery item to the list
+  // I found that this was caused because I was trying to deconstruct the incomingItem instead of assigning it to the const newItem
+  addItem = (incomingItem) => {
+    const { groceryItems } = this.state
+    // const { newItem } = { this.getUniqId(), ... incomingItems }
+    const newItem = { id: this.getUniqId(), ...incomingItem }
+    // this.setState({ newItem, ...grocertItems })
+    this.setState({ groceryItems: [newItem, ...groceryItems] })
+  }
+
   render(){
     const { groceryItems } = this.state
     return(
       <div>
         <h1>Greg's Shopping List</h1>
+
         <ItemForm   addItem = {this.addItem}   />
+
         <List items={ groceryItems } handleAdded={ this.handleAdded } />
         
       </div>
