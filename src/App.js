@@ -34,10 +34,15 @@ class App extends Component {
        .substring(1);
   }
 
+  // My note from AddListItem.js ended up being caused by the commented out lines of code here. After looking at this with my little brother
+  // He told me that something in this function was setting my state to undefined when I tried to add a grocery item to the list
+  // I found that this was caused because I was trying to deconstruct the incomingItem instead of assigning it to the const newItem
   addItem = (incomingItem) => {
     const { groceryItems } = this.state
-    const { newItem } = { id: this.getUniqId(), ...incomingItem }
-    this.setState({ newItem, ...groceryItems })
+    // const { newItem } = { this.getUniqId(), ... incomingItems }
+    const newItem = { id: this.getUniqId(), ...incomingItem }
+    // this.setState({ newItem, ...grocertItems })
+    this.setState({ groceryItems: [newItem, ...groceryItems] })
   }
 
   render(){
